@@ -27,14 +27,14 @@ function setupIntialValues() {
     loanYears.value=10;
   const loanRate=document.getElementById("loan-rate");
     loanRate.value=4.5;
-    initialValues={"amount":loanAmount.value,"years":loanYears.value,"rate":loanRate.value}
-  calculateMonthlyPayment(initialValues);
+
+  update();
 }
 
 // Get the current values from the UI
 // Update the monthly payment
 function update() {
-  calculateMonthlyPayment(getCurrentUIValues());
+  updateMonthly(calculateMonthlyPayment(getCurrentUIValues()).monthlyPayments);
 }
 
 // Given an object of values (a value has amount, years and rate ),
@@ -46,13 +46,11 @@ function calculateMonthlyPayment(values) {
   let totalLoanValue=parseInt(values.amount);
 
   //we assume compounding interest for this payment
-  for(i=1; i<=values.years;i++){
+  for(i=0; i<values.years;i++){
     totalLoanValue+=totalLoanValue*(values.rate/100);
     totalLoanValue=parseFloat(totalLoanValue.toFixed(2));
-    //console.log(`Year ${i} current value is ${totalLoanValue}`);
   }
   monthlyPayments=parseFloat((totalLoanValue/months).toFixed(2));
-  console.log(monthlyPayments);
   return{
     monthlyPayments
   }
@@ -61,4 +59,5 @@ function calculateMonthlyPayment(values) {
 // Given a string representing the monthly payment value,
 // update the UI to show the value.
 function updateMonthly(monthly) {
+  document.getElementById("monthly-payment").innerText=`${monthly.toFixed(2)}`;
 }
