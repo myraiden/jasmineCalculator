@@ -10,11 +10,11 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 function getCurrentUIValues() {
-    let newAmount=(document.getElementById("loan-amount").value);
-    let newYears=(document.getElementById("loan-years").value);
-    let newRate=(document.getElementById("loan-rate").value);
-    let currentValues=[newAmount,newYears,newRate]
-  return{currentValues}
+  return{
+    amount + (document.getElementById("loan-amount").value),
+    "year":document.getElementById("loan-years").value,
+    "rate":document.getElementById("loan-rate").value
+  };
 }
 
 // Get the inputs from the DOM.
@@ -27,16 +27,13 @@ function setupIntialValues() {
     loanYears.value=10;
   const loanRate=document.getElementById("loan-rate");
     loanRate.value=4.5;
-    initialValues=[loanAmount.value,loanYears.value,loanRate.value]
+    initialValues={"amount":loanAmount.value,"year":loanYears.value,"rate":loanRate.value}
   calculateMonthlyPayment(initialValues);
-
 }
 
 // Get the current values from the UI
 // Update the monthly payment
 function update() {
-  //let newValues=getCurrentUIValues();
-  //console.log(newValues.values);
   calculateMonthlyPayment(getCurrentUIValues());
 }
 
@@ -44,14 +41,13 @@ function update() {
 // calculate the monthly payment.  The output should be a string
 // that always has 2 decimal places.
 function calculateMonthlyPayment(values) {
-  console.log(values);
   let monthlyPayments=0;
-  let months=values[1]*12;
-  let totalLoanValue=parseInt(values[0]);
+  let months=values.year*12;
+  let totalLoanValue=parseInt(values.amount);
 
   //we assume compounding interest for this payment
-  for(i=1; i<=document.getElementById("loan-years").value;i++){
-    totalLoanValue+=totalLoanValue*(values[2]/100);
+  for(i=1; i<=values.year;i++){
+    totalLoanValue+=totalLoanValue*(values.rate/100);
     totalLoanValue=parseFloat(totalLoanValue.toFixed(2));
     //console.log(`Year ${i} current value is ${totalLoanValue}`);
   }
