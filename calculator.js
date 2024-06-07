@@ -42,15 +42,10 @@ function update() {
 // that always has 2 decimal places.
 function calculateMonthlyPayment(values) {
   let monthlyPayments=0;
-  let months=values.years*12;
-  let totalLoanValue=parseInt(values.amount);
 
-  //we assume compounding interest for this payment
-  for(i=0; i<values.years;i++){
-    totalLoanValue+=totalLoanValue*(values.rate/100);
-    totalLoanValue=parseFloat(totalLoanValue.toFixed(2));
-  }
-  monthlyPayments=parseFloat((totalLoanValue/months).toFixed(2));
+  //using the equation given of (principle*(rate/12))/(1-(1+rate))^-(years*12)
+  finalLoanAmount=(values.amount*(values.rate/12))/(1-((1+values.rate)^(-1*values.years*12)));
+  monthlyPayments=parseFloat(finalLoanAmount.toFixed(2));
   return{
     monthlyPayments
   }
