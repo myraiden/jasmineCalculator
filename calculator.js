@@ -26,7 +26,7 @@ function setupIntialValues() {
   const loanYears=document.getElementById("loan-years");
     loanYears.value=10;
   const loanRate=document.getElementById("loan-rate");
-    loanRate.value=4.5;
+    loanRate.value=12;
 
   update();
 }
@@ -43,8 +43,12 @@ function update() {
 function calculateMonthlyPayment(values) {
   let monthlyPayments=0;
 
-  //using the equation given of (principle*(rate/12))/(1-(1+rate))^-(years*12)
-  finalLoanAmount=(values.amount*(values.rate/12))/(1-((1+values.rate)^(-1*values.years*12)));
+  //using the equation given of (principle*i)/(1-(1+i)^-n)
+  //  where i = rate / 12
+  //  where n = years * 12
+  let iVal=values.rate/12;
+  let nVal=values.years*-12;
+  finalLoanAmount=(values.amount*iVal)/(1-((1+iVal)^nVal));
   monthlyPayments=parseFloat(finalLoanAmount.toFixed(2));
   return{
     monthlyPayments
